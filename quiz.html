@@ -1,0 +1,186 @@
+<HTML>
+<HEAD>  
+<LINK rel="stylesheet" href="quiz_stylesheet.css">  
+</HEAD>
+<BODY>
+<div class="quiz-container" id="quizApp">
+    <div class="question-box">
+        <div class="question-text" id="questionText"></div>
+    </div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+
+    <button class="next-btn" id="nextButton">Следующий вопрос</button>
+</div>
+<script>
+    const QUIZ = [
+        {
+            text: "Какое из растений опасно для животных?",
+            options: [
+                { imgUrl: "алоэ.png", label: "Алоэ", correct: true },
+                { imgUrl: "Орхидея.png", label: "Орхидея", correct: false },
+                { imgUrl: "Эпифиллум.png", label: "Эпифиллум", correct: false }
+            ]
+        },
+        {
+            text: "А какое из этих растений ядовито?",
+            options: [
+                { imgUrl: "Бромелия.png", label: "Бромелия", correct: false },
+                { imgUrl: "каланхоэ.png", label: "Каланхоэ", correct: true },
+                { imgUrl: "Пилея.png", label: "Пилея", correct: false }
+            ]
+        },
+        {
+            text: "Отлично, время выбрать безопасное растение",
+            options: [
+                { imgUrl: "сансивьерия.png", label: "Сансивьерия", correct: false },
+                { imgUrl: "хамедорея.png", label: "Хамедорея", correct: true },
+                { imgUrl: "фикус.png", label: "Фикус", correct: false }
+            ]
+        },
+        {
+            text: "Знаете ли вы, почему кошки грызут комнатные растения?",
+            options: [
+                { imgUrl: "evil.png", label: "Из вредности или обиды на хозяина", correct: false },
+                { imgUrl: "brokenheart.png", label: "Они ревнуют хозяина к растению, потому что человек тратит время на поливку цветка", correct: false },
+                { imgUrl: "sick.png", label: "Кошки пытаются восполнить дефицит витаминов в организме", correct: true }
+            ]
+        },
+        {
+            text: "Наконец, можно ли держать цветы в доме с животными?",
+            options: [
+                { imgUrl: "love.png", label: "Да, если выбрать безопасные растения и расположить их вне досягаемости кошки", correct: true },
+                { imgUrl: "eating.png", label: "Нет, потому что рано или поздно кошка доберется до растения, это неизбежно", correct: false },
+                { imgUrl: "sad.png", label: "Да, потому что жизнь кошки это ее ответственность, а я люблю цветы", correct: false }
+            ]
+        }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false; 
+
+    const questionEl = document.getElementById("questionText");
+    const optionsGrid = document.getElementById("optionsGrid");
+    const nextButton = document.getElementById("nextButton");
+    
+    function handleAnswer(optionIndex, isCorrect, currentQuestionObj) {
+
+        answered = true; //чтобы отвечать только на неотвеченные вопросы
+
+        const cards = document.querySelectorAll(".option-card");
+        cards.forEach(card => {
+            card.classList.remove("correct-highlight", "wrong-highlight"); //удаляю правильно/неправильно с каждого ответа
+        });
+
+        if (isCorrect) {
+            cards[optionIndex].classList.add("correct-highlight");
+            score++;
+        } else {
+            cards[optionIndex].classList.add("wrong-highlight");
+        }
+
+        const containerQuiz = document.getElementById("quizApp");
+        containerQuiz.classList.add("disabled-click"); //блокирую повторный выбор ответа
+    }
+
+    function renderCurrentQuestion() {
+        const containerQuiz = document.getElementById("quizApp");
+        containerQuiz.classList.remove("disabled-click");   //разблокируем новый неотвеченный вопрос
+
+        answered = false;
+
+        const question = QUIZ[currentIndex];
+        questionEl.innerText = question.text; //вставили вопрос в плашку для вопросов
+
+        optionsGrid.innerHTML = ""; //отчистила место для новых ответов
+
+        question.options.forEach((opt, idx) => {
+            const card = document.createElement("div");
+            card.className = "option-card fade-in";
+
+            const img = document.createElement("img");
+            img.src = opt.imgUrl;
+            img.alt = opt.label;
+            img.className = "option-img";
+            card.appendChild(img);
+
+            const labelSpan = document.createElement("div");
+            labelSpan.className = "option-label";
+            labelSpan.innerText = opt.label;
+            card.appendChild(labelSpan);
+
+            card.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!answered) {
+                    handleAnswer(idx, opt.correct, question);
+                }
+            });
+            optionsGrid.appendChild(card); //добавила ответы в поле для них
+        });
+
+        if (currentIndex === QUIZ.length - 1) {   //условия для смены между кнопками следующий вопрос и завершить
+            nextButton.innerText = "Завершить";
+        } else {
+            nextButton.innerText = "Следующий вопрос";
+        }
+        nextButton.disabled = false;          //разблокируем кнопку после обновления
+    }
+
+    function nextQuestion() {
+	 if (!answered) {
+        alert("Пожалуйста, выберите ответ на вопрос!");
+        return; 
+    }
+
+        if (currentIndex + 1 < QUIZ.length) {
+            currentIndex++;
+            renderCurrentQuestion();
+        } else {
+            if (score == 5) {
+			questionEl.innerHTML=score+'/5 <br>'+'Тебе можно смело доверить маленькую пушистую жизнь';
+			 optionsGrid.innerHTML = `
+        <div style="text-align: center;">
+            <img src='ill.jpg' style='max-width: 200px; border-radius: 20px; margin-bottom: 15px;'>
+            <br>Спасибо за прохождение теста, для повторного прохождения обновите страницу
+        </div>`;
+		}
+            else if (score >= 4) {
+			questionEl.innerHTML=score+'/5 <br>Неплохо, хоть и не без ошибок';
+			optionsGrid.innerHTML=`
+        <div style="text-align: center;">
+            <img src="ill.jpg" style="max-width: 200px; border-radius: 20px; margin-bottom: 15px;">
+            <br>Спасибо за прохождение теста, для повторного прохождения обновите страницу
+        </div>`;
+		}
+            else if (score >= 3) {
+			questionEl.innerHTML=score+'/5 <br>'+'Твоя кошка скажет тебе спасибо, если ты будешь внимательнее к ней';
+			optionsGrid.innerHTML=`
+        <div style="text-align: center;">
+            <img src='ill.jpg' style='max-width: 200px; border-radius: 20px; margin-bottom: 15px;'>
+            <br>Спасибо за прохождение теста, для повторного прохождения обновите страницу
+        </div>`;
+		}
+            else {
+			questionEl.innerHTML =score+'/5 <br>'+'Я переживаю за твою кошку...';
+			optionsGrid.innerHTML=`
+        <div style="text-align: center;">
+            <img src='ill.jpg' style='max-width: 200px; border-radius: 20px; margin-bottom: 15px;'>
+            <br>Спасибо за прохождение теста, для повторного прохождения обновите страницу
+        </div>`;
+		}
+            nextButton.disabled = true;
+            return;
+        }
+    }
+	
+	function initQuiz() {
+        renderCurrentQuestion();
+        nextButton.addEventListener("click", nextQuestion);
+    }
+
+    initQuiz();
+</script>
+</BODY>
+</HTML>

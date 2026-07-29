@@ -1,0 +1,147 @@
+@font-face {
+	font-family: 'LinkFont'; 
+	src: url('DejaVuSerif.ttf') format('truetype'); 
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'ParagraphFont'; 
+	src: url('HindGuntur-Regular.ttf') format('truetype'); 
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	box-sizing: border-box;
+	cursor: url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+body {
+	background: rgba(107, 142, 35, 0.5);
+	display: block;
+	font-family: 'ParagraphFont', sans-serif;
+	margin: auto;
+	height: 500px;
+	cursor: url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+a, button, input[type="submit"], input[type="button"] 
+{
+    cursor:url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+.quiz-container {
+	width: 100%;
+	border-radius: 20px;
+	padding: 25px;
+	cursor:url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+.question-box {
+	background: rgba(85, 107, 47);
+	border-radius: 20px;
+	padding: 5px;
+	margin-bottom: 32px;
+	text-align: center;
+	font-family: 'ParagraphFont', sans-serif;
+	cursor:url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+.question-text {
+	font-size: 20px;
+	font-family:'ParagraphFont', sans-serif;
+	color: rgba(255, 255, 240);
+}
+
+.options-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 20px; 
+	font-family: 'ParagraphFont', sans-serif;
+	margin-bottom: 20px; ;
+	cursor:url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+.option-card {
+	background: #fff6e8;
+	border-radius: 20px;
+	cursor: pointer;
+	transition: transform 0.2s, box-shadow 0.2s;
+	font-family: 'ParagraphFont', sans-serif;
+	text-align: center;
+	padding: 16px 12px 12px;
+	cursor: url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+.option-card:hover {
+	transform: translateY(-6px);
+	background: #fffdf9;
+}
+
+.option-card:active {
+	transform: scale(0.97);
+}
+
+.option-card.correct-highlight {
+	border: 3px solid #2b9348;
+	background: #e2f5e6;
+}
+
+.option-card.wrong-highlight {
+	border: 3px solid #e63946;
+	background: #ffe6e8;
+}
+
+.option-img {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	border-radius: 20px;
+	background: #e8ddce;
+	display: block;
+	cursor:url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+.option-label {
+	margin:10px;
+	font-size: 15px;
+	font-family: 'ParagraphFont', sans-serif;
+	color: #2d3e2a;
+	text-align:center;
+	align-items: center;
+	background: #f3e7d3;
+	display: inline-block;
+	padding:5px 10px;
+	border-radius: 10px;
+	cursor:url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+.next-btn {
+	background: #f4a261;
+	border: none;
+	font-size: 1.3rem;
+	font-weight: bold;
+	padding: 20px 32px;
+	border-radius:20px;
+	width: 100%;
+	color: #2c2b26;
+	transition: all 0.2s;
+	font-family: 'ParagraphFont', sans-serif;
+	letter-spacing: 0.5px;
+	cursor:url('WhiteGrey-Cat-Paw-PNG.png'), auto;
+}
+
+.next-btn:active {
+	transform: translateY(2px);
+}
+
+.next-btn:disabled {
+	opacity: 0.5;
+	transform: none;
+	cursor: not-allowed;
+}
+.disabled-click .option-card {
+	pointer-events: none;
+	opacity: 0.9;
+}
+.disabled-click .option-card:active {
+	transform: none;
+}

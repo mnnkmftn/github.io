@@ -1,0 +1,145 @@
+<HTML>
+<HEAD>
+<title>Фотогалерея котиков</title>
+<LINK rel="stylesheet" href="photos_stylesheet.css">
+</HEAD>
+<BODY>
+<a href="C:\Users\User\Desktop\проект по ит\main.html" style="color:green;font-size:40px; text-decoration: none;">назад</a>
+<hr>
+<h3>здесь можно поделиться фотографиями своих котов</h3><br>
+<label class="my-update">
+<input type="file" id="myFile" style="display:none;">
+<span class="my-button">выбери фотографию</span>
+</label>
+<br><br>
+<button onclick="addPhoto()" class="my-button">отправить</button><br><br>
+<hr>
+<div id="gallery" class="gallery"></div>
+
+<script>
+let key = "myPhotos"; //он нужен, чтобы все фотографии в localStorage можно было позвать одновременно
+
+showPhotos();
+
+function showPhotos() {
+	let data = localStorage.getItem(key);
+	let galleryDiv = document.getElementById("gallery");
+	
+	let myPhotos = JSON.parse(data); //превращаю данные в массив
+
+	galleryDiv.innerHTML = "";
+   
+	for (let i = 0; i < myPhotos.length; i++) 
+	{
+		let onePhoto = myPhotos[i]; //разделила массив на элементы
+		
+		let box = document.createElement("div"); //области для фотографий
+		box.style.margin = "10px";
+		box.style.border = "2px solid green";
+		box.style.borderRadius = "20px";
+		box.style.padding = "10px";
+		box.style.width = "220px";
+		box.style.height = "400px";
+		box.style.display = "inline-block";
+		box.style.verticalAlign = "top";
+		box.style.overflow = "auto";
+		box.style.background = "rgba(107, 142, 35, 0.5)";
+		
+		let img = document.createElement("img");
+		img.src = onePhoto.url;
+		img.style.width = "220px";
+		img.style.height = "auto";
+		img.style.maxHeight = "220px";
+		img.style.objectFit = "contain";
+		img.style.display = "block";
+		img.style.marginBottom = "8px";
+		
+		let name = document.createElement("p");
+		name.innerHTML = "<b>Имя питомца:</b> " + onePhoto.name;
+		
+		let dateText = document.createElement("p");
+		dateText.innerHTML = "<b>Дата публикации:</b> " + onePhoto.date;
+		dateText.style.fontSize = "12px";
+	
+		let delBtn = document.createElement("button");
+		delBtn.innerHTML = "Удалить фото";
+		delBtn.style.borderRadius = "20px";
+		delBtn.style.background = "green";
+		delBtn.style.border = "none";
+		delBtn.style.padding = "10px";
+		delBtn.style.color = "rgba(255, 255, 240)";
+		
+		
+		delBtn.onclick = (function(n) {
+			return function() {
+				deletePhoto(n);
+			};
+		})(i);
+		
+		box.appendChild(img);
+		box.appendChild(name);
+		box.appendChild(dateText);
+		box.appendChild(delBtn);
+		galleryDiv.appendChild(box);
+	}
+}
+
+function addPhoto() {
+	let fileInput = document.getElementById("myFile");
+	let myFile = fileInput.files[0];
+
+	if (!myFile) {
+		alert("Сначала добавьте фотографию!!");
+		return;
+	}
+   
+	let userName = prompt("Введите имя питомца");
+	if (userName == null || userName == "") {
+		userName = "Неизвестно";
+	}
+	
+	let reader = new FileReader();
+	
+	reader.onload = function(e) {
+		let imageUrl = e.target.result;
+		let now = new Date();
+		let currentDate = now.toLocaleString();
+		
+		let newPhoto = {
+			url: imageUrl,
+			name: userName,
+			date: currentDate
+		};
+		
+		let oldData = localStorage.getItem(key);
+		let allPhotos = [];
+		
+		if (oldData) {
+			allPhotos = JSON.parse(oldData);
+		}
+		
+		allPhotos.push(newPhoto);
+		localStorage.setItem(key, JSON.stringify(allPhotos));
+		
+		fileInput.value = "";
+		showPhotos();
+		alert("Фотография сохранена");
+	};
+	
+	reader.readAsDataURL(myFile);
+}
+
+function deletePhoto(n) {
+	let data = localStorage.getItem(key);
+	let allPhotos = JSON.parse(data);
+	
+	allPhotos.splice(n, 1);
+	localStorage.setItem(key, JSON.stringify(allPhotos));
+	
+	showPhotos();
+	
+	alert("Фото удалено");
+}
+</script>
+</BODY>
+</HTML>
