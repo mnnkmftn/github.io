@@ -23,14 +23,6 @@
             ]
         },
         {
-            text: "А какое из этих растений ядовито?",
-            options: [
-                { imgUrl: "Бромелия.png", label: "Бромелия", correct: false },
-                { imgUrl: "каланхоэ.png", label: "Каланхоэ", correct: true },
-                { imgUrl: "пилея.png", label: "Пилея", correct: false }
-            ]
-        },
-        {
             text: "Отлично, время выбрать безопасное растение",
             options: [
                 { imgUrl: "сансивьерия.png", label: "Сансивьерия", correct: false },
@@ -138,24 +130,24 @@
             currentIndex++;
             renderCurrentQuestion();
         } else {
-            if (score == 5) {
-			questionEl.innerHTML=score+'/5 <br>'+'Тебе можно смело доверить маленькую пушистую жизнь';
+            if (score == 4) {
+			questionEl.innerHTML=score+'/4 <br>'+'Тебе можно смело доверить маленькую пушистую жизнь';
 			 optionsGrid.innerHTML = `
         <div style="text-align: center;">
             <img src='ill.jpg' style='max-width: 200px; border-radius: 20px; margin-bottom: 15px;'>
             <br>Спасибо за прохождение теста, для повторного прохождения обновите страницу
         </div>`;
 		}
-            else if (score >= 4) {
-			questionEl.innerHTML=score+'/5 <br>Неплохо, хоть и не без ошибок';
+            else if (score >= 3) {
+			questionEl.innerHTML=score+'/4 <br>Неплохо, хоть и не без ошибок';
 			optionsGrid.innerHTML=`
         <div style="text-align: center;">
             <img src="ill.jpg" style="max-width: 200px; border-radius: 20px; margin-bottom: 15px;">
             <br>Спасибо за прохождение теста, для повторного прохождения обновите страницу
         </div>`;
 		}
-            else if (score >= 3) {
-			questionEl.innerHTML=score+'/5 <br>'+'Твоя кошка скажет тебе спасибо, если ты будешь внимательнее к ней';
+            else if (score >= 2) {
+			questionEl.innerHTML=score+'/4 <br>'+'Твоя кошка скажет тебе спасибо, если ты будешь внимательнее к ней';
 			optionsGrid.innerHTML=`
         <div style="text-align: center;">
             <img src='ill.jpg' style='max-width: 200px; border-radius: 20px; margin-bottom: 15px;'>
@@ -163,7 +155,7 @@
         </div>`;
 		}
             else {
-			questionEl.innerHTML =score+'/5 <br>'+'Я переживаю за твою кошку...';
+			questionEl.innerHTML =score+'/4 <br>'+'Я переживаю за твою кошку...';
 			optionsGrid.innerHTML=`
         <div style="text-align: center;">
             <img src='ill.jpg' style='max-width: 200px; border-radius: 20px; margin-bottom: 15px;'>
